@@ -5,3 +5,5 @@ __pycache__/
 *.csv
 venv/
 notebooks/__pycache__/
+.venv
+.idea
