@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HealthPro Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthTrack - Personalized Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
+    /* Root Variables */
     :root {
-      --primary: #2A5C82;
-      --secondary: #5BA4E6;
-      --accent: #7FD1B9;
-      --background: #F8FAFC;
-      --surface: #FFFFFF;
-      --text: #2D3748;
-      --muted: #718096;
-      --border: #E2E8F0;
-      --chart-bg: #F7FAFC;
+      --primary: #059669;       /* Refined green for primary elements */
+      --secondary: #10B981;     /* Lighter green for secondary accents */
+      --surface: #ffffff;
+      --background: #f1f5f9;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --card-hover-bg: linear-gradient(135deg, rgba(5,150,105,0.05), rgba(16,185,129,0.05));
     }
 
+    /* Global Reset */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -27,26 +28,38 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background-color: var(--background);
+      background: var(--background);
       color: var(--text);
-      display: flex;
+      display: grid;
+      grid-template-columns: 240px 1fr;
       min-height: 100vh;
-      line-height: 1.5;
+      transition: background 0.3s ease;
     }
 
-    /* Sidebar with Transitions */
+    /* Sidebar Navigation */
     .sidebar {
-      width: 280px;
       background: var(--surface);
       padding: 2rem 1.5rem;
       border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    
+    .sidebar h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      color: var(--primary);
     }
 
-    .nav li a {
+    .nav {
+      list-style: none;
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .nav-item {
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -54,197 +67,186 @@
       border-radius: 8px;
       color: var(--muted);
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .nav li a:hover {
-      background: var(--background);
+    .nav-item:hover {
+      background: #f1f5f9;
       color: var(--primary);
-      transform: translateX(8px);
     }
 
-    .nav li a i {
-      transition: color 0.3s ease;
-    }
-
-    /* Main Content Area */
+    /* Main Content */
     .main-content {
-      flex: 1;
-      padding: 2rem;
-      max-width: 1440px;
-      margin: 0 auto;
+      padding: 2rem 3rem;
+      display: grid;
+      gap: 2rem;
     }
 
-    /* Animated Header */
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding: 1rem 0;
-      animation: fadeInDown 0.6s ease;
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
 
-    /* Card Transitions */
-    .card {
+    /* Health Card Design */
+    .health-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
       padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .health-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      background: var(--card-hover-bg);
+    }
+
+    .card-header {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 1rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: 1rem;
     }
 
-    .card:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Chart Animation */
-    .chart-container {
-      height: 0;
-      opacity: 0;
-      background: var(--chart-bg);
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
       border-radius: 8px;
-      transition: 
-        height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.3s ease,
-        transform 0.3s ease;
-      transform-origin: top;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 1.2rem;
     }
 
-    .card:hover .chart-container {
+    .health-card p {
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* Data Visualization Placeholder */
+    .chart-placeholder {
       height: 160px;
-      opacity: 1;
+      background: #f8fafc;
+      border-radius: 8px;
       margin-top: 1rem;
-      transform: scaleY(1);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    /* Search Transition */
-    .search-input {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .search-input:focus {
-      transform: scale(1.02);
-    }
-
-    /* Animations */
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .health-card:hover .chart-placeholder {
+      opacity: 1;
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
       body {
-        flex-direction: column;
+        grid-template-columns: 1fr;
       }
       
       .sidebar {
-        width: 100%;
+        height: auto;
+        position: static;
         border-right: none;
         border-bottom: 1px solid var(--border);
+      }
+      
+      .main-content {
         padding: 1.5rem;
-      }
-      
-      .dashboard-header {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .card:hover {
-        transform: translateY(-2px);
       }
     }
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <h2>HealthPro</h2>
-    </div>
-    <nav>
-      <ul class="nav">
-        <li><a href="#"><i class="fas fa-chart-line"></i>Dashboard</a></li>
-        <li><a href="#"><i class="fas fa-heartbeat"></i>Vitals</a></li>
-        <li><a href="#"><i class="fas fa-utensils"></i>Nutrition</a></li>
-        <li><a href="#"><i class="fas fa-prescription-bottle"></i>Meds</a></li>
-        <li><a href="#"><i class="fas fa-file-medical"></i>Records</a></li>
-      </ul>
-    </nav>
-  </div>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <h2>HealthTrack</h2>
+    <ul class="nav">
+      <li>
+        <a href="#" class="nav-item">
+          <i class="fas fa-home"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-item">
+          <i class="fas fa-utensils"></i>
+          Diet
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-item">
+          <i class="fas fa-heartbeat"></i>
+          Health
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-item">
+          <i class="fas fa-book-open"></i>
+          Recipes
+        </a>
+      </li>
+    </ul>
+  </nav>
 
   <!-- Main Content -->
-  <div class="main-content">
-    <header class="dashboard-header">
-      <h1>Patient Health Dashboard</h1>
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search health metrics...">
-        <i class="fas fa-search search-icon"></i>
-      </div>
-    </header>
-
-    <main>
-      <div class="dashboard-grid">
-        <!-- Health Overview Card -->
-        <article class="card">
-          <div class="card-header">
-            <h3 class="card-title">Health Overview</h3>
-            <i class="fas fa-chart-bar"></i>
-          </div>
-          <div class="card-content">
-            <p class="card-text">Track daily health metrics including activity levels and sleep patterns.</p>
-            <div class="chart-container"></div>
-          </div>
-        </article>
-
-        <!-- Nutrition Card -->
-        <article class="card">
-          <div class="card-header">
-            <h3 class="card-title">Nutrition</h3>
+  <main class="main-content">
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Diet Tracking Card -->
+      <article class="health-card">
+        <div class="card-header">
+          <div class="card-icon">
             <i class="fas fa-apple-alt"></i>
           </div>
-          <div class="card-content">
-            <p class="card-text">Monitor calorie intake and nutritional balance.</p>
-            <div class="chart-container"></div>
-          </div>
-        </article>
+          <h3>Diet Tracking</h3>
+        </div>
+        <p>Log meals, track nutrients, and monitor daily intake.</p>
+        <div class="chart-placeholder"></div>
+      </article>
 
-        <!-- Medications Card -->
-        <article class="card">
-          <div class="card-header">
-            <h3 class="card-title">Medications</h3>
-            <i class="fas fa-pills"></i>
+      <!-- Health Metrics Card -->
+      <article class="health-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-running"></i>
           </div>
-          <div class="card-content">
-            <p class="card-text">Manage prescriptions and medication schedules.</p>
-            <div class="chart-container"></div>
-          </div>
-        </article>
+          <h3>Health Metrics</h3>
+        </div>
+        <p>Monitor activity, heart rate, and sleep patterns.</p>
+        <div class="chart-placeholder"></div>
+      </article>
 
-        <!-- Appointments Card -->
-        <article class="card">
-          <div class="card-header">
-            <h3 class="card-title">Appointments</h3>
-            <i class="fas fa-calendar-check"></i>
+      <!-- Medical Profile Card -->
+      <article class="health-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-file-medical"></i>
           </div>
-          <div class="card-content">
-            <p class="card-text">View upcoming medical appointments.</p>
-            <div class="chart-container"></div>
+          <h3>Medical Profile</h3>
+        </div>
+        <p>Access health records and treatment plans.</p>
+        <div class="chart-placeholder"></div>
+      </article>
+
+      <!-- Wellness Recipes Card -->
+      <article class="health-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-blender"></i>
           </div>
-        </article>
-      </div>
-    </main>
-  </div>
+          <h3>Wellness Recipes</h3>
+        </div>
+        <p>Discover healthy meals tailored to your needs.</p>
+        <div class="chart-placeholder"></div>
+      </article>
+    </div>
+  </main>
 </body>
 </html>
