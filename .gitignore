@@ -1,0 +1,7 @@
+__pycache__/
+.env
+*.log
+*.sqlite3
+*.csv
+venv/
+notebooks/__pycache__/
