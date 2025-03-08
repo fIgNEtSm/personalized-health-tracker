@@ -18,11 +18,8 @@ The **Personalized Health Tracker** is a health monitoring system that helps use
 ```
 /personalized-health-tracker
 │-- /frontend   # Frontend code (React/HTML-CSS)
-│-- /backend    # Backend code (Flask/Django/FastAPI)
-│-- /data       # Sample datasets and logs
-│-- /models     # Machine Learning models
+│-- /backend    # Backend code (Flask)
 │-- /docs       # Documentation and API guides
-│-- /notebooks  # Jupyter notebooks for analysis
 │-- .gitignore  # Ignore unnecessary files
 │-- README.md   # Project overview and setup
 │-- requirements.txt  # Dependencies
@@ -34,7 +31,7 @@ The **Personalized Health Tracker** is a health monitoring system that helps use
 ### 1️. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/personalized-health-tracker.git
+git clone https://github.com/fIgNEtSm/personalized-health-tracker.git
 cd personalized-health-tracker
 ```
 
@@ -47,7 +44,7 @@ pip install -r requirements.txt
 ### 3️. Run the Application
 
 ```bash
-python app.py  # If using Flask or FastAPI
+python app.py
 ```
 
 ## Future Enhancements
