@@ -109,33 +109,33 @@
       align-items: center;
     }
     .search-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* Heading on left, search bar on right */
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 0.5rem;
-}
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Heading on left, search bar on right */
+      width: 100%;
+      max-width: 1200px;
+      margin-bottom: 0.5rem;
+    }
     .search-bar {
-  padding: 0.75rem 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 1rem;
-  color: var(--text);
-  background: var(--surface);
-  width: 300px;
-  transition: all 0.3s ease;
-}
+      padding: 0.75rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--surface);
+      width: 300px;
+      transition: all 0.3s ease;
+    }
     .search-bar:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(5,150,105,0.1);
     }
     .main-heading {
-  font-size: 2rem;
-  color: var(--primary);
-  margin: 0; /* Remove extra left margin */
-}
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 0;
+    }
     .recipes-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -291,7 +291,9 @@
       </button>
     </div>
     <ul class="nav" id="navList">
-      <li><a href="homepage.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a></li>
+      <!-- Updated links so they go to home.html & dashboard.html -->
+      <li><a href="home.html" class="nav-item"><i class="fas fa-house"></i> Home</a></li>
+      <li><a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a></li>
       <li><a href="#" class="nav-item"><i class="fas fa-utensils"></i> Diet</a></li>
       <li><a href="#" class="nav-item"><i class="fas fa-heartbeat"></i> Health</a></li>
       <li><a href="recipes.html" class="nav-item active"><i class="fas fa-book-open"></i> Recipes</a></li>
@@ -458,14 +460,12 @@
         container.style.display = 'none';
       } else {
         container.style.display = 'flex';
-        // For each selected card, create a thumbnail (here using placeholder text)
+        // For each selected card, create a thumbnail (using the card's first image)
         selectedCards.forEach(id => {
-          // Find the recipe card element
           const card = document.querySelector(`.recipe-card[data-id="${id}"]`);
           if (card) {
             const thumb = document.createElement('div');
             thumb.className = 'selected-item';
-            // For demonstration, use the card's first image as thumbnail
             const img = card.querySelector('.recipe-top-line img').cloneNode(true);
             thumb.appendChild(img);
             list.appendChild(thumb);
@@ -474,7 +474,7 @@
       }
     }
 
-    // Sidebar toggle function (unchanged)
+    // Sidebar toggle function (optional if you want to collapse nav)
     function toggleNav() {
       const navList = document.getElementById('navList');
       navList.classList.toggle('closed');
@@ -486,14 +486,12 @@
       }
     }
 
-    // (Optional) Right button click handler
+    // Right button click handler (example)
     document.getElementById('rightButton').addEventListener('click', function() {
-      // For demonstration, simply alert the selected card IDs
       alert("Selected recipes: " + selectedCards.join(', '));
-      // Here, you might navigate to another page or process the selection further
     });
 
-    // Search functionality (if needed)
+    // Search functionality
     const searchInput = document.getElementById('searchInput');
     const recipeCardElements = document.querySelectorAll('.recipe-card');
     function filterRecipes() {
