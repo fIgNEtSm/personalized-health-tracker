@@ -6,4 +6,4 @@ __pycache__/
 venv/
 notebooks/__pycache__/
 .venv
-
+.idea
