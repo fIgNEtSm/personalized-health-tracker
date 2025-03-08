@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healthcare Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --ease-spring: cubic-bezier(0.25, 0.46, 0.45, 1.2);
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --color-primary: #2563eb;
+      --color-secondary: #3b82f6;
+      --color-accent: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 100%);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .nav li a {
+      color: #e2e8f0;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      transition: 
+        transform 0.3s var(--ease-spring),
+        background 0.4s var(--ease-smooth),
+        color 0.3s var(--ease-smooth);
+    }
+
+    .nav li a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(6px);
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: 
+        transform 0.4s var(--ease-spring),
+        box-shadow 0.4s var(--ease-smooth);
+    }
+
+    .card:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Chart Animation */
+    .chart-placeholder {
+      height: 0;
+      opacity: 0;
+      background: #f1f5f9;
+      border-radius: 0.5rem;
+      transition: 
+        height 0.6s var(--ease-spring),
+        opacity 0.4s var(--ease-smooth),
+        transform 0.3s var(--ease-spring);
+      transform-origin: top;
+    }
+
+    .card:hover .chart-placeholder {
+      height: 160px;
+      opacity: 1;
+      margin-top: 1rem;
+      transform: scaleY(1);
+    }
+
+    /* Interactive Elements */
+    button, input {
+      transition: 
+        all 0.3s var(--ease-smooth),
+        transform 0.2s var(--ease-spring);
+    }
+
+    input:focus {
+      transform: scale(1.02);
+    }
+
+    /* Physics-based hover */
+    .nav li a:hover {
+      transition-timing-function: var(--ease-spring);
+    }
+
+    /* Color transitions */
+    .card h2 {
+      color: var(--color-primary);
+      transition: color 0.4s var(--ease-smooth);
+    }
+
+    .card:hover h2 {
+      color: var(--color-secondary);
+    }
+
+    /* Subtle background pulse */
+    @keyframes subtle-pulse {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .card {
+      background: linear-gradient(120deg, 
+        rgba(255,255,255,0.9) 0%,
+        rgba(255,255,255,1) 100%
+      );
+      background-size: 200% 200%;
+      animation: subtle-pulse 12s ease infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- Your existing HTML structure -->
+</body>
+</html>

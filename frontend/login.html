@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* === BODY STYLES === */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        /* === CONTAINER STYLES === */
+        .container {
+            display: flex;
+            width: 70%;
+            max-width: 1000px;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* === IMAGE CONTAINER STYLES === */
+        .image-container {
+            width: 55%; /* Image on the left takes more space */
+            background: url('C:/Users/EndlaAdharsh/Pictures/home_page_login (1).jpg') no-repeat center center/cover; /* ABSOLUTE PATH! */
+        }
+
+        /* === LOGIN BOX STYLES === */
+        .login-box {
+            width: 45%; /* Login box on the right */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-box h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .login-box p {
+            font-size: 14px;
+            color: gray;
+        }
+
+        /* === FORM STYLES === */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* === REMEMBER/FORGOT STYLES === */
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* === BUTTON STYLES === */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* === SIGNUP STYLES === */
+        .signup {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .signup a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container"></div>
+        <div class="login-box">
+            <h2>Welcome Back</h2>
+            <p>Sign in with your email address and Password.</p>
+            <form>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+
+                <div class="remember-forgot">
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <button type="submit">Sign In</button>
+            </form>
+            <div class="signup">
+                Don't have an account? <a href="registration.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
