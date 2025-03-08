@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recipes - HealthTrack</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #059669;
+      --secondary: #10B981;
+      --surface: #ffffff;
+      --background: #f1f5f9;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --card-hover-bg: linear-gradient(135deg, rgba(5,150,105,0.05), rgba(16,185,129,0.05));
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+      transition: background 0.3s ease;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+      transition: background 0.3s ease-in-out;
+    }
+    .heading-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.2rem;
+      margin-bottom: 1rem;
+    }
+    .heading-row h2 {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    .menu-button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .nav {
+      list-style: none;
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+      overflow: hidden;
+      border-radius: 8px;
+      transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+      background: var(--surface);
+      margin-top: 0.5rem;
+    }
+    .nav.closed {
+      opacity: 0;
+      transform: translateY(-20px);
+      max-height: 0;
+      background: transparent;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .nav-item:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+    .nav-item.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    /* Main content */
+    .main-content {
+      margin-left: 240px;
+      padding: 2rem;
+      transition: margin-left 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Heading on left, search bar on right */
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 0.5rem;
+}
+    .search-bar {
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+  width: 300px;
+  transition: all 0.3s ease;
+}
+    .search-bar:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(5,150,105,0.1);
+    }
+    .main-heading {
+  font-size: 2rem;
+  color: var(--primary);
+  margin: 0; /* Remove extra left margin */
+}
+    .recipes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      justify-items: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+    .recipe-card {
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+      overflow: hidden;
+      position: relative;
+      width: 280px;
+      max-width: 100%;
+      cursor: pointer;
+    }
+    .recipe-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      background: var(--card-hover-bg);
+    }
+    .recipe-top-line {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      position: relative;
+    }
+    .recipe-top-line img {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    .recipe-top-line span {
+      color: var(--muted);
+    }
+    .recipe-card h3 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .recipe-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    /* Selected badge on card */
+    .badge {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+    }
+    /* Big selected card container at bottom */
+    .selected-container {
+      width: 100%;
+      max-width: 1200px;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .selected-list {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+    }
+    .selected-item {
+      width: 60px;
+      height: 60px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+    }
+    .selected-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .right-button {
+      background: var(--primary);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .right-button:hover {
+      background: var(--secondary);
+    }
+    @media (max-width: 1024px) {
+      .recipes-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .recipe-card {
+        width: 260px;
+      }
+    }
+    @media (max-width: 768px) {
+      body {
+        grid-template-columns: 1fr;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+        display: block;
+      }
+      .recipes-grid {
+        grid-template-columns: 1fr;
+      }
+      .recipe-card {
+        width: 100%;
+        max-width: 400px;
+      }
+      .search-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-bar {
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar">
+    <div class="heading-row">
+      <h2>HealthTrack</h2>
+      <button class="menu-button" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <ul class="nav" id="navList">
+      <li><a href="homepage.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="#" class="nav-item"><i class="fas fa-utensils"></i> Diet</a></li>
+      <li><a href="#" class="nav-item"><i class="fas fa-heartbeat"></i> Health</a></li>
+      <li><a href="recipes.html" class="nav-item active"><i class="fas fa-book-open"></i> Recipes</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="search-container">
+      <input type="text" class="search-bar" placeholder="Search recipes..." id="searchInput">
+      <h1 class="main-heading">Recipes</h1>
+    </div>
+    <div class="recipes-grid">
+      <!-- Recipe Card 1 -->
+      <article class="recipe-card" data-id="1">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=1" alt="Icon 1">
+          <span>Fresh Avocado Salad</span>
+        </div>
+        <h3>Fresh Avocado Salad</h3>
+        <p>A delicious salad with fresh avocado, tomatoes, and mixed greens dressed with lemon vinaigrette.</p>
+      </article>
+      <!-- Recipe Card 2 -->
+      <article class="recipe-card" data-id="2">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=2" alt="Icon 2">
+          <span>Quinoa & Veggie Bowl</span>
+        </div>
+        <h3>Quinoa & Veggie Bowl</h3>
+        <p>Hearty quinoa mixed with roasted vegetables and topped with a tangy dressing for a nutritious meal.</p>
+      </article>
+      <!-- Recipe Card 3 -->
+      <article class="recipe-card" data-id="3">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=3" alt="Icon 3">
+          <span>Grilled Chicken Wrap</span>
+        </div>
+        <h3>Grilled Chicken Wrap</h3>
+        <p>Tender grilled chicken, crisp lettuce, and juicy tomatoes wrapped in a whole wheat tortilla.</p>
+      </article>
+      <!-- Recipe Card 4 -->
+      <article class="recipe-card" data-id="4">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=4" alt="Icon 4">
+          <span>Berry Smoothie</span>
+        </div>
+        <h3>Berry Smoothie</h3>
+        <p>A refreshing blend of mixed berries, banana, and almond milk—perfect for a healthy start to your day.</p>
+      </article>
+      <!-- Recipe Card 5 -->
+      <article class="recipe-card" data-id="5">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=5" alt="Icon 5">
+          <span>Tomato Basil Soup</span>
+        </div>
+        <h3>Tomato Basil Soup</h3>
+        <p>A comforting soup made with fresh tomatoes, basil, and a hint of cream for a silky texture.</p>
+      </article>
+      <!-- Recipe Card 6 -->
+      <article class="recipe-card" data-id="6">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=6" alt="Icon 6">
+          <span>Veggie Pizza</span>
+        </div>
+        <h3>Veggie Pizza</h3>
+        <p>Loaded with bell peppers, onions, mushrooms, and fresh mozzarella on a crispy whole wheat crust.</p>
+      </article>
+      <!-- Recipe Card 7 -->
+      <article class="recipe-card" data-id="7">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=7" alt="Icon 7">
+          <span>Fruit Parfait</span>
+        </div>
+        <h3>Fruit Parfait</h3>
+        <p>Layers of fresh fruit, yogurt, and granola for a sweet yet healthy treat any time of day.</p>
+      </article>
+      <!-- Recipe Card 8 -->
+      <article class="recipe-card" data-id="8">
+        <div class="recipe-top-line">
+          <img src="https://via.placeholder.com/24x24.png?text=8" alt="Icon 8">
+          <span>Salmon Teriyaki</span>
+        </div>
+        <h3>Salmon Teriyaki</h3>
+        <p>Delicious salmon fillets glazed with teriyaki sauce and served over steamed rice and veggies.</p>
+      </article>
+      <!-- Plus Card -->
+      <a href="add-recipe.html" class="plus-card" title="Add New Recipe">
+        <img src="plus-circle.png" alt="Add New Recipe">
+      </a>
+    </div>
+
+    <!-- Big Card at the bottom to show selected recipes -->
+    <div class="selected-container" id="selectedContainer" style="display:none;">
+      <div class="selected-list" id="selectedList">
+        <!-- Selected recipe thumbnails will be inserted here -->
+      </div>
+      <button class="right-button" id="rightButton">&rarr;</button>
+    </div>
+  </main>
+
+  <script>
+    // Global array to store selected card IDs
+    let selectedCards = [];
+
+    // Add click event to each recipe card for selection/deselection
+    const recipeCards = document.querySelectorAll('.recipe-card');
+    recipeCards.forEach(card => {
+      card.addEventListener('click', function () {
+        const cardId = this.getAttribute('data-id');
+
+        // Toggle selection
+        if (this.classList.contains('selected')) {
+          // Deselect: remove from selectedCards array
+          this.classList.remove('selected');
+          removeBadge(this);
+          selectedCards = selectedCards.filter(id => id !== cardId);
+        } else {
+          // Select: add to selectedCards array
+          this.classList.add('selected');
+          selectedCards.push(cardId);
+          addBadge(this, selectedCards.length);
+        }
+        updateBadges();
+        updateSelectedContainer();
+      });
+    });
+
+    // Function to add a badge with a number on a card
+    function addBadge(card, number) {
+      let badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = number;
+      card.appendChild(badge);
+    }
+
+    // Function to remove the badge from a card
+    function removeBadge(card) {
+      let badge = card.querySelector('.badge');
+      if (badge) {
+        badge.remove();
+      }
+    }
+
+    // Update all badges to reflect the current order
+    function updateBadges() {
+      // For each selected card, update the badge number based on its position in selectedCards array
+      recipeCards.forEach(card => {
+        const cardId = card.getAttribute('data-id');
+        if (card.classList.contains('selected')) {
+          let index = selectedCards.indexOf(cardId);
+          let badge = card.querySelector('.badge');
+          if (badge) {
+            badge.textContent = index + 1;
+          }
+        }
+      });
+    }
+
+    // Update the big selected card container at the bottom
+    function updateSelectedContainer() {
+      const container = document.getElementById('selectedContainer');
+      const list = document.getElementById('selectedList');
+      list.innerHTML = ''; // Clear current list
+      if (selectedCards.length === 0) {
+        container.style.display = 'none';
+      } else {
+        container.style.display = 'flex';
+        // For each selected card, create a thumbnail (here using placeholder text)
+        selectedCards.forEach(id => {
+          // Find the recipe card element
+          const card = document.querySelector(`.recipe-card[data-id="${id}"]`);
+          if (card) {
+            const thumb = document.createElement('div');
+            thumb.className = 'selected-item';
+            // For demonstration, use the card's first image as thumbnail
+            const img = card.querySelector('.recipe-top-line img').cloneNode(true);
+            thumb.appendChild(img);
+            list.appendChild(thumb);
+          }
+        });
+      }
+    }
+
+    // Sidebar toggle function (unchanged)
+    function toggleNav() {
+      const navList = document.getElementById('navList');
+      navList.classList.toggle('closed');
+      const sidebar = document.getElementById('sidebar');
+      if (navList.classList.contains('closed')) {
+        sidebar.style.background = 'transparent';
+      } else {
+        sidebar.style.background = 'var(--surface)';
+      }
+    }
+
+    // (Optional) Right button click handler
+    document.getElementById('rightButton').addEventListener('click', function() {
+      // For demonstration, simply alert the selected card IDs
+      alert("Selected recipes: " + selectedCards.join(', '));
+      // Here, you might navigate to another page or process the selection further
+    });
+
+    // Search functionality (if needed)
+    const searchInput = document.getElementById('searchInput');
+    const recipeCardElements = document.querySelectorAll('.recipe-card');
+    function filterRecipes() {
+      const searchTerm = searchInput.value.toLowerCase();
+      recipeCardElements.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+      });
+    }
+    searchInput.addEventListener('input', filterRecipes);
+  </script>
+</body>
+</html>
