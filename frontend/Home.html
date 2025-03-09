@@ -178,10 +178,41 @@
     </div>
     <!-- The nav is open by default. Toggle will add or remove the 'closed' class -->
     <ul class="nav" id="navList">
-      <li><a href="#" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a></li>
-      <li><a href="#" class="nav-item"><i class="fas fa-utensils"></i> Diet</a></li>
-      <li><a href="#" class="nav-item"><i class="fas fa-heartbeat"></i> Health</a></li>
-      <li><a href="#" class="nav-item"><i class="fas fa-book-open"></i> Recipes</a></li>
+      <li>
+        <!-- Link updated to point to home.html -->
+        <a href="home.html" class="nav-item active">
+          <i class="fas fa-heartbeat"></i>
+          Home
+        </a>
+      </li>
+      <li>
+        <!-- Link updated to point to dashboard.html -->
+        <a href="dashboard.html" class="nav-item">
+          <i class="fas fa-home"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <!-- For Diet, no dedicated page provided, so leave as # or create diet.html -->
+        <a href="#" class="nav-item">
+          <i class="fas fa-utensils"></i>
+          Diet
+        </a>
+      </li>
+      <li>
+        <!-- For Health, no dedicated page provided, so leave as # or create health.html -->
+        <a href="#" class="nav-item">
+          <i class="fas fa-heartbeat"></i>
+          Health
+        </a>
+      </li>
+      <li>
+        <!-- Recipes now points to recipes.html -->
+        <a href="recipes.html" class="nav-item">
+          <i class="fas fa-book-open"></i>
+          Recipes
+        </a>
+      </li>
     </ul>
   </nav>
   
@@ -246,7 +277,7 @@
       // Toggle sidebar background based on nav state
       const sidebar = document.getElementById('sidebar');
       if (navList.classList.contains('closed')) {
-        sidebar.style.background = 'transparent';
+        // If closed, you could optionally set: sidebar.style.background = 'transparent';
       } else {
         sidebar.style.background = 'var(--surface)';
       }

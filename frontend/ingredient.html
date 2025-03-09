@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Nutrition - HealthTrack</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary: #059669;
+      --secondary: #10B981;
+      --surface: #ffffff;
+      --background: #f8fafc;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      width: 240px;
+      height: 100vh;
+      padding: 1.5rem;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+    }
+
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin-top: 2rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--background);
+      color: var(--primary);
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 2rem;
+      margin-left: 240px;
+    }
+
+    .recipe-header {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .recipe-image {
+      width: 300px;
+      height: 200px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    /* Nutrition grid: force 4 columns on desktop */
+    .nutrition-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .nutrition-card {
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nutrition-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .nutrition-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0.5rem 0;
+    }
+
+    .nutrition-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Ingredients Card Styling */
+    .ingredients-card h3 {
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    /* Ingredients grid: 4 columns and 4 rows */
+    .ingredients-card ul {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, auto);
+      gap: 0.5rem;
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    .ingredients-card li {
+      padding: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      user-select: none;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .ingredients-card li:hover {
+      background: var(--secondary);
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+      
+      .recipe-header {
+        flex-direction: column;
+      }
+      
+      .recipe-image {
+        width: 100%;
+      }
+      
+      .nutrition-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      
+      .ingredients-card ul {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h2>HealthTrack</h2>
+    <ul class="nav">
+      <li>
+        <a href="Home.html" class="nav-item">
+          <i class="fas fa-home"></i> Home
+        </a>
+      </li>
+      <li>
+        <a href="dashboard.html" class="nav-item">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="ingredients.html" class="nav-item active">
+          <i class="fas fa-book-open"></i> Ingredients
+        </a>
+      </li>
+      <li>
+        <a href="recipe.html" class="nav-item">
+          <i class="fas fa-tachometer-alt"></i> Recipe
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="recipe-header">
+      <!-- Dynamically updated via API -->
+      <img id="recipeImage" src="" alt="Recipe Image" class="recipe-image" />
+      <div>
+        <h1 id="recipeTitle">Loading...</h1>
+        <p id="recipeDescription"></p>
+      </div>
+    </div>
+
+    <h2>Nutritional Information</h2>
+    <div class="nutrition-grid">
+      <div class="nutrition-card">
+        <i class="fas fa-fire" style="color: var(--primary); font-size: 1.5rem;"></i>
+        <div class="nutrition-value" id="caloriesValue">-- kcal</div>
+        <div class="nutrition-label">Calories</div>
+      </div>
+      <div class="nutrition-card">
+        <i class="fas fa-dumbbell" style="color: var(--primary); font-size: 1.5rem;"></i>
+        <div class="nutrition-value" id="proteinValue">-- g</div>
+        <div class="nutrition-label">Protein</div>
+      </div>
+      <div class="nutrition-card">
+        <i class="fas fa-bread-slice" style="color: var(--primary); font-size: 1.5rem;"></i>
+        <div class="nutrition-value" id="carbsValue">-- g</div>
+        <div class="nutrition-label">Carbohydrates</div>
+      </div>
+      <div class="nutrition-card">
+        <i class="fas fa-capsules" style="color: var(--primary); font-size: 1.5rem;"></i>
+        <div class="nutrition-value" id="vitaminsValue">Vitamin A, C, K</div>
+        <div class="nutrition-label">Vitamins</div>
+      </div>
+      <!-- Ingredients Card as a separate grid item -->
+      <div class="nutrition-card ingredients-card">
+        <h3>Ingredients</h3>
+        <ul id="ingredientsList">
+          <!-- Dynamically populated via JavaScript -->
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Example function to fetch data from an API and populate the page
+    async function loadRecipe(recipeId) {
+      try {
+        // Replace with your real endpoint and recipeId parameter
+        const response = await fetch(`https://example.com/api/recipes/${recipeId}`);
+        const data = await response.json();
+
+        // Populate recipe details
+        document.getElementById('recipeImage').src = data.imageUrl || '';
+        document.getElementById('recipeTitle').textContent = data.title || 'Untitled Recipe';
+        document.getElementById('recipeDescription').textContent = data.description || '';
+
+        // Update nutrition values (adjust property names as needed)
+        document.getElementById('caloriesValue').textContent = (data.calories || '--') + ' kcal';
+        document.getElementById('proteinValue').textContent = (data.protein || '--') + ' g';
+        document.getElementById('carbsValue').textContent = (data.carbs || '--') + ' g';
+        document.getElementById('vitaminsValue').textContent = data.vitamins || 'Vitamin A, C, K';
+
+        // Populate ingredients list within the ingredients card as a grid
+        const ingredientsList = document.getElementById('ingredientsList');
+        ingredientsList.innerHTML = '';
+        if (Array.isArray(data.ingredients)) {
+          data.ingredients.forEach(ingredient => {
+            const li = document.createElement('li');
+            li.textContent = ingredient;
+            ingredientsList.appendChild(li);
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching recipe data:', error);
+      }
+    }
+
+    // Call loadRecipe with an example recipeId (replace '123' with your actual ID)
+    loadRecipe('123');
+
+    // Mobile menu toggle (optional)
+    function toggleNav() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('active');
+    }
+
+    // Close sidebar when clicking outside (on mobile)
+    document.addEventListener('click', (e) => {
+      const sidebar = document.querySelector('.sidebar');
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target)) {
+        sidebar.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
