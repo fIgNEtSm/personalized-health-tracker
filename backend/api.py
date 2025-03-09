@@ -1,11 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date, timedelta
 
+api = Blueprint("api", __name__)
 app = Flask(__name__)
 
 # Database configuration (SQLite)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///health_tracker.db'
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:VMwZTYIa67oJ5Cvi@bashfully-placid-oriole.data-1.use1.tembo.io:5432/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -44,8 +46,8 @@ class UserStreak(db.Model):
     last_logged = db.Column(db.Date)
 
 
-@app.route('/users', methods=['GET'])
-@app.route('/users/<int:user_id>', methods=['GET'])
+@app.route('/api/users/', methods=['GET'])
+@app.route('/api/users/<int:user_id>/', methods=['GET'])
 def get_users(user_id=None):
     if user_id:
         user = User.query.get(user_id)
@@ -61,7 +63,7 @@ def get_users(user_id=None):
          in users])
 
 
-@app.route('/users', methods=['POST'])
+@app.route('/api/users/', methods=['POST'])
 def add_user():
     data = request.get_json()
     new_user = User(name=data['name'], email=data['email'], age=data['age'], weight=data['weight'],
@@ -71,7 +73,7 @@ def add_user():
     return jsonify({"message": "User added successfully"}), 201
 
 
-@app.route('/users/<int:user_id>', methods=['PUT'])
+@app.route('/api/users/<int:user_id>/', methods=['PUT'])
 def update_user(user_id):
     user = User.query.get(user_id)
     if not user:
@@ -87,7 +89,7 @@ def update_user(user_id):
     return jsonify({"message": "User updated successfully"})
 
 
-@app.route('/users/<int:user_id>', methods=['DELETE'])
+@app.route('/api/users/<int:user_id>/', methods=['DELETE'])
 def delete_user(user_id):
     user = User.query.get(user_id)
     if not user:
@@ -98,14 +100,14 @@ def delete_user(user_id):
     return jsonify({"message": "User deleted successfully"})
 
 
-@app.route('/foodlog/<int:user_id>', methods=['GET'])
+@app.route('/api/foodlog/<int:user_id>/', methods=['GET'])
 def get_food_logs(user_id):
     logs = FoodLog.query.filter_by(user_id=user_id).all()
     return jsonify([{"id": log.id, "date": str(log.date), "food_item": log.food_item, "calories": log.calories,
                      "nutrients": log.nutrients} for log in logs])
 
 
-@app.route('/foodlog', methods=['POST'])
+@app.route('/api/foodlog', methods=['POST'])
 def add_food_log():
     data = request.get_json()
     new_log = FoodLog(user_id=data['user_id'], food_item=data['food_item'], calories=data['calories'],
@@ -118,7 +120,7 @@ def add_food_log():
     return jsonify({"message": "Food log added successfully"}), 201
 
 
-@app.route('/healthlog', methods=['POST'])
+@app.route('/api/healthlog', methods=['POST'])
 def add_health_log():
     data = request.get_json()
     new_log = HealthLog(
@@ -135,7 +137,7 @@ def add_health_log():
     return jsonify({"message": "Health log added successfully"}), 201
 
 
-@app.route('/healthscore/<int:user_id>', methods=['GET'])
+@app.route('/api/healthscore/<int:user_id>', methods=['GET'])
 def get_health_score(user_id):
     user = User.query.get(user_id)
     if not user:
@@ -144,7 +146,7 @@ def get_health_score(user_id):
     return jsonify({"user_id": user_id, "health_score": "Not yet Implemented"})
 
 
-@app.route('/streak/<int:user_id>', methods=['GET'])
+@app.route('/api/streak/<int:user_id>', methods=['GET'])
 def get_user_streak(user_id):
     streak = UserStreak.query.get(user_id)
     if not streak:
@@ -167,10 +169,3 @@ def update_streak(user_id):
         streak = UserStreak(user_id=user_id, streak_count=1, last_logged=today)
         db.session.add(streak)
     db.session.commit()
-
-
-
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # Create database tables
-    app.run(debug=True)
