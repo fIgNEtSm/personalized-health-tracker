@@ -119,28 +119,29 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="{{ url_for("dashboard") }}">
+            <a class="nav-link {% if active_page == 'dashboard' %}active{% else %} collapsed {% endif %}"
+               href="{{ url_for("dashboard") }}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {% if active_page in ['add_recipe', 'edit_recipe'] %}active {% else %}collapsed{% endif %}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Recipe</span>
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="components-nav" class="nav-content collapse {% if active_page in ['add_recipe', 'edit_recipe'] %}show{% endif %}" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{ url_for("add_recipe") }}">
+                    <a class="{% if active_page in 'add_recipe' %}active {% else %}collapsed{% endif %}" href="{{ url_for("add_recipe") }}">
                         <i class="bi bi-circle"></i><span>Add Recipe</span>
                     </a>
                 </li>
 
             </ul><!-- End Recipe Nav -->
         </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-login.html">
+        <li class="nav-item {% if active_page == 'recipe' %}active{% endif %}">
+            <a class="nav-link collapsed" href="#">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>Health</span>
             </a>

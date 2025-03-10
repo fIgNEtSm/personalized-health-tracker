@@ -1,320 +1,334 @@
 {% include "header.html" %}
 <head>
-    <title><title>Components / Cards - NiceAdmin Bootstrap Template</title></title>
-  <!-- Inline CSS -->
-  <style>
-    /* Header and sidebar sizing (example) */
-    header.header {
-      height: 60px; /* Adjust to your actual header height */
-    }
-    aside.sidebar {
-      width: 300px; /* Adjust to your actual sidebar width */
-    }
+    <title>Components / Cards - NiceAdmin Bootstrap Template</title>
+    <!-- Inline CSS -->
+    <style>
+        /* Header and sidebar sizing (example) */
+        header.header {
+            height: 60px; /* Adjust to your actual header height */
+        }
 
-    /* Main content with margins for fixed header and sidebar */
-    .main-content {
-      margin-left: 300px; /* Matches sidebar width */
-      margin-top: 60px;   /* Matches header height */
-      box-sizing: border-box;
-      padding: 1rem;
-    }
+        aside.sidebar {
+            width: 300px; /* Adjust to your actual sidebar width */
+        }
 
-    /* Grid for recipe cards: exactly 3 columns */
-    .recipes-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      align-items: start;
-    }
+        /* Main content with margins for fixed header and sidebar */
+        .main-content {
+            margin-left: 300px; /* Matches sidebar width */
+            margin-top: 60px; /* Matches header height */
+            box-sizing: border-box;
+            padding: 1rem;
+        }
 
-    /* Individual card styling */
-    .recipe-card {
-      background: #fff; /* Or var(--surface) if using CSS vars */
-      padding: 1.5rem;
-      border-radius: 12px;
-      border: 1px solid #ddd; /* Or var(--border) if using CSS vars */
-      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-      position: relative;
-      width: 280px;  /* Optional: keep uniform card width */
-      max-width: 100%;
-      cursor: pointer;
-    }
-    .recipe-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      background: #fafafa; /* Or var(--card-hover-bg) */
-    }
-    .recipe-top-line {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.95rem;
-      color: #333;
-    }
-    .recipe-top-line img {
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
-      object-fit: cover;
-    }
-    .recipe-card h3 {
-      font-size: 1.2rem;
-      color: #012970; /* Or var(--primary) */
-      margin-bottom: 0.5rem;
-      text-align: center;
-    }
-    .recipe-card p {
-      font-size: 0.9rem;
-      color: #666; /* Or var(--muted) */
-      line-height: 1.4;
-    }
-    /* Badge to show selection order */
-    .badge {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      background: #012970; /* Or var(--primary) */
-      color: #fff;
-      font-size: 0.8rem;
-      padding: 2px 6px;
-      border-radius: 50%;
-    }
+        /* Grid for recipe cards: exactly 3 columns */
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
 
-    /* Selected items container at the bottom */
-    .selected-container {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 1200px;
-      background: #fff;
-      border-top: 2px solid #012970; /* Or var(--primary) */
-      padding: 1rem;
-      display: none; /* hidden by default, toggled via JS */
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-      z-index: 9999;
-      box-sizing: border-box;
-    }
-    .selected-list {
-      display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-    }
-    .selected-item {
-      width: 60px;
-      height: 60px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f9f9f9;
-    }
-    .selected-item img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-    .right-button {
-      background: #012970; /* Or var(--primary) */
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-left: 1rem;
-    }
-    .right-button:hover {
-      background: #0649b4; /* Slightly lighter or different accent */
-    }
+        /* Individual card styling */
+        .recipe-card {
+            background: #fff; /* Or var(--surface) if using CSS vars */
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #ddd; /* Or var(--border) if using CSS vars */
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            position: relative;
+            width: 280px; /* Optional: keep uniform card width */
+            max-width: 100%;
+            cursor: pointer;
+        }
 
-    /* Responsive tweak for narrower screens */
-    @media (max-width: 768px) {
-      .main-content {
-        margin-left: 0;
-        margin-top: 60px; /* keep header margin if it's fixed */
-      }
-      .recipes-grid {
-        grid-template-columns: 1fr; /* single column on small screens */
-      }
-      .selected-container {
-        position: static;
-        transform: none;
-        margin-top: 1rem;
-      }
-    }
-  </style>
+        .recipe-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            background: #fafafa; /* Or var(--card-hover-bg) */
+        }
+
+        .recipe-top-line {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .recipe-top-line img {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .recipe-card h3 {
+            font-size: 1.2rem;
+            color: #012970; /* Or var(--primary) */
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .recipe-card p {
+            font-size: 0.9rem;
+            color: #666; /* Or var(--muted) */
+            line-height: 1.4;
+        }
+
+        /* Badge to show selection order */
+        .badge {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: #012970; /* Or var(--primary) */
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        /* Selected items container at the bottom */
+        .selected-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1200px;
+            background: #fff;
+            border-top: 2px solid #012970; /* Or var(--primary) */
+            padding: 1rem;
+            display: none; /* hidden by default, toggled via JS */
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            box-sizing: border-box;
+        }
+
+        .selected-list {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+
+        .selected-item {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9f9f9;
+        }
+
+        .selected-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .right-button {
+            background: #012970; /* Or var(--primary) */
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .right-button:hover {
+            background: #0649b4; /* Slightly lighter or different accent */
+        }
+
+        /* Responsive tweak for narrower screens */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                margin-top: 60px; /* keep header margin if it's fixed */
+            }
+
+            .recipes-grid {
+                grid-template-columns: 1fr; /* single column on small screens */
+            }
+
+            .selected-container {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- ======= Main Content ======= -->
-  <main class="main-content">
+<!-- ======= Main Content ======= -->
+<main class="main-content">
     <div class="recipes-grid">
-      <!-- Recipe Card 1 -->
-      <article class="recipe-card" data-id="1">
-        <div class="recipe-top-line"></div>
-        <h3>Fresh Avocado Salad</h3>
-        <p>A delicious salad with fresh avocado, tomatoes, and mixed greens dressed with lemon vinaigrette.</p>
-      </article>
+        <!-- Recipe Card 1 -->
+        <article class="recipe-card" data-id="1">
+            <div class="recipe-top-line"></div>
+            <h3>Fresh Avocado Salad</h3>
+            <p>A delicious salad with fresh avocado, tomatoes, and mixed greens dressed with lemon vinaigrette.</p>
+        </article>
 
-      <!-- Recipe Card 2 -->
-      <article class="recipe-card" data-id="2">
-        <div class="recipe-top-line"></div>
-        <h3>Quinoa &amp; Veggie Bowl</h3>
-        <p>Hearty quinoa mixed with roasted vegetables and topped with a tangy dressing for a nutritious meal.</p>
-      </article>
+        <!-- Recipe Card 2 -->
+        <article class="recipe-card" data-id="2">
+            <div class="recipe-top-line"></div>
+            <h3>Quinoa &amp; Veggie Bowl</h3>
+            <p>Hearty quinoa mixed with roasted vegetables and topped with a tangy dressing for a nutritious meal.</p>
+        </article>
 
-      <!-- Recipe Card 3 -->
-      <article class="recipe-card" data-id="3">
-        <div class="recipe-top-line"></div>
-        <h3>Grilled Chicken Wrap</h3>
-        <p>Tender grilled chicken, crisp lettuce, and juicy tomatoes wrapped in a whole wheat tortilla.</p>
-      </article>
+        <!-- Recipe Card 3 -->
+        <article class="recipe-card" data-id="3">
+            <div class="recipe-top-line"></div>
+            <h3>Grilled Chicken Wrap</h3>
+            <p>Tender grilled chicken, crisp lettuce, and juicy tomatoes wrapped in a whole wheat tortilla.</p>
+        </article>
 
-      <!-- Recipe Card 4 -->
-      <article class="recipe-card" data-id="4">
-        <div class="recipe-top-line"></div>
-        <h3>Berry Smoothie</h3>
-        <p>A refreshing blend of mixed berries, banana, and almond milk—perfect for a healthy start to your day.</p>
-      </article>
+        <!-- Recipe Card 4 -->
+        <article class="recipe-card" data-id="4">
+            <div class="recipe-top-line"></div>
+            <h3>Berry Smoothie</h3>
+            <p>A refreshing blend of mixed berries, banana, and almond milk—perfect for a healthy start to your day.</p>
+        </article>
 
-      <!-- Recipe Card 5 -->
-      <article class="recipe-card" data-id="5">
-        <div class="recipe-top-line"></div>
-        <h3>Tomato Basil Soup</h3>
-        <p>A comforting soup made with fresh tomatoes, basil, and a hint of cream for a silky texture.</p>
-      </article>
+        <!-- Recipe Card 5 -->
+        <article class="recipe-card" data-id="5">
+            <div class="recipe-top-line"></div>
+            <h3>Tomato Basil Soup</h3>
+            <p>A comforting soup made with fresh tomatoes, basil, and a hint of cream for a silky texture.</p>
+        </article>
 
-      <!-- Recipe Card 6 -->
-      <article class="recipe-card" data-id="6">
-        <div class="recipe-top-line"></div>
-        <h3>Veggie Pizza</h3>
-        <p>Loaded with bell peppers, onions, mushrooms, and fresh mozzarella on a crispy whole wheat crust.</p>
-      </article>
+        <!-- Recipe Card 6 -->
+        <article class="recipe-card" data-id="6">
+            <div class="recipe-top-line"></div>
+            <h3>Veggie Pizza</h3>
+            <p>Loaded with bell peppers, onions, mushrooms, and fresh mozzarella on a crispy whole wheat crust.</p>
+        </article>
 
-      <!-- Recipe Card 7 -->
-      <article class="recipe-card" data-id="7">
-        <div class="recipe-top-line">
-          <span>Fruit Parfait</span>
-        </div>
-        <h3>Fruit Parfait</h3>
-        <p>Layers of fresh fruit, yogurt, and granola for a sweet yet healthy treat any time of day.</p>
-      </article>
+        <!-- Recipe Card 7 -->
+        <article class="recipe-card" data-id="7">
+            <div class="recipe-top-line">
+                <span>Fruit Parfait</span>
+            </div>
+            <h3>Fruit Parfait</h3>
+            <p>Layers of fresh fruit, yogurt, and granola for a sweet yet healthy treat any time of day.</p>
+        </article>
 
-      <!-- Recipe Card 8 -->
-      <article class="recipe-card" data-id="8">
-        <div class="recipe-top-line"></div>
-        <h3>Salmon Teriyaki</h3>
-        <p>Delicious salmon fillets glazed with teriyaki sauce and served over steamed rice and veggies.</p>
-      </article>
+        <!-- Recipe Card 8 -->
+        <article class="recipe-card" data-id="8">
+            <div class="recipe-top-line"></div>
+            <h3>Salmon Teriyaki</h3>
+            <p>Delicious salmon fillets glazed with teriyaki sauce and served over steamed rice and veggies.</p>
+        </article>
     </div>
-  </main>
-  <!-- End Main Content -->
+</main>
+<!-- End Main Content -->
 
-  <!-- ======= Selected Recipes Bar ======= -->
-  <div class="selected-container" id="selectedContainer">
+<!-- ======= Selected Recipes Bar ======= -->
+<div class="selected-container" id="selectedContainer">
     <div class="selected-list" id="selectedList">
-      <!-- Thumbnails of selected recipes go here -->
+        <!-- Thumbnails of selected recipes go here -->
     </div>
     <button class="right-button" id="rightButton">&rarr;</button>
-  </div>
-  <!-- End Selected Recipes Bar -->
+</div>
+<!-- End Selected Recipes Bar -->
 
-  <!-- Vendor JS (from template) -->
-  <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Vendor JS (from template) -->
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Your Selection Logic -->
-  <script>
+<!-- Your Selection Logic -->
+<script>
     // Global array to store selected card IDs
     let selectedCards = [];
 
     // Add click event to each recipe card for selection/deselection
     const recipeCards = document.querySelectorAll('.recipe-card');
     recipeCards.forEach(card => {
-      card.addEventListener('click', function () {
-        const cardId = this.getAttribute('data-id');
+        card.addEventListener('click', function () {
+            const cardId = this.getAttribute('data-id');
 
-        // Toggle selection
-        if (this.classList.contains('selected')) {
-          // Deselect: remove from selectedCards array
-          this.classList.remove('selected');
-          removeBadge(this);
-          selectedCards = selectedCards.filter(id => id !== cardId);
-        } else {
-          // Select: add to selectedCards array
-          this.classList.add('selected');
-          selectedCards.push(cardId);
-          addBadge(this, selectedCards.length);
-        }
-        updateBadges();
-        updateSelectedContainer();
-      });
+            // Toggle selection
+            if (this.classList.contains('selected')) {
+                // Deselect: remove from selectedCards array
+                this.classList.remove('selected');
+                removeBadge(this);
+                selectedCards = selectedCards.filter(id => id !== cardId);
+            } else {
+                // Select: add to selectedCards array
+                this.classList.add('selected');
+                selectedCards.push(cardId);
+                addBadge(this, selectedCards.length);
+            }
+            updateBadges();
+            updateSelectedContainer();
+        });
     });
 
     // Function to add a badge with a number on a card
     function addBadge(card, number) {
-      let badge = document.createElement('span');
-      badge.className = 'badge';
-      badge.textContent = number;
-      card.appendChild(badge);
+        let badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = number;
+        card.appendChild(badge);
     }
 
     // Function to remove the badge from a card
     function removeBadge(card) {
-      let badge = card.querySelector('.badge');
-      if (badge) {
-        badge.remove();
-      }
+        let badge = card.querySelector('.badge');
+        if (badge) {
+            badge.remove();
+        }
     }
 
     // Update all badges to reflect the current order
     function updateBadges() {
-      // For each selected card, update the badge number
-      // based on its position in selectedCards array
-      recipeCards.forEach(card => {
-        const cardId = card.getAttribute('data-id');
-        if (card.classList.contains('selected')) {
-          let index = selectedCards.indexOf(cardId);
-          let badge = card.querySelector('.badge');
-          if (badge) {
-            badge.textContent = index + 1;
-          }
-        }
-      });
+        // For each selected card, update the badge number
+        // based on its position in selectedCards array
+        recipeCards.forEach(card => {
+            const cardId = card.getAttribute('data-id');
+            if (card.classList.contains('selected')) {
+                let index = selectedCards.indexOf(cardId);
+                let badge = card.querySelector('.badge');
+                if (badge) {
+                    badge.textContent = index + 1;
+                }
+            }
+        });
     }
 
     // Update the big selected card container at the bottom
     function updateSelectedContainer() {
-      const container = document.getElementById('selectedContainer');
-      const list = document.getElementById('selectedList');
-      list.innerHTML = ''; // Clear current list
+        const container = document.getElementById('selectedContainer');
+        const list = document.getElementById('selectedList');
+        list.innerHTML = ''; // Clear current list
 
-      if (selectedCards.length === 0) {
-        container.style.display = 'none';
-      } else {
-        container.style.display = 'flex';
-        // For each selected card, create a thumbnail (using the card's first image)
-        selectedCards.forEach(id => {
-          const card = document.querySelector(`.recipe-card[data-id="${id}"]`);
-          if (card) {
-            const thumb = document.createElement('div');
-            thumb.className = 'selected-item';
-            // Use the card's first image from .recipe-top-line if present
-            const img = card.querySelector('.recipe-top-line img');
-            if (img) {
-              thumb.appendChild(img.cloneNode(true));
-            }
-            list.appendChild(thumb);
-          }
-        });
-      }
+        if (selectedCards.length === 0) {
+            container.style.display = 'none';
+        } else {
+            container.style.display = 'flex';
+            // For each selected card, create a thumbnail (using the card's first image)
+            selectedCards.forEach(id => {
+                const card = document.querySelector(`.recipe-card[data-id="${id}"]`);
+                if (card) {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'selected-item';
+                    // Use the card's first image from .recipe-top-line if present
+                    const img = card.querySelector('.recipe-top-line img');
+                    if (img) {
+                        thumb.appendChild(img.cloneNode(true));
+                    }
+                    list.appendChild(thumb);
+                }
+            });
+        }
     }
-  </script>
-  <script src="{{ url_for("static", filename="/js/main.js") }}"></script>
+</script>
+<script src="{{ url_for("static", filename="/js/main.js") }}"></script>
 </body>

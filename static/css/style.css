@@ -824,17 +824,17 @@ h6 {
   flex-grow: 0;
 }
 
-.dashboard .sales-card .card-icon {
+.dashboard .health-card .card-icon {
   color: #4154f1;
   background: #f6f6fe;
 }
 
-.dashboard .revenue-card .card-icon {
+.dashboard .calorie-card .card-icon {
   color: #2eca6a;
   background: #e0f8e9;
 }
 
-.dashboard .customers-card .card-icon {
+.dashboard .heart-card .card-icon {
   color: #ff771d;
   background: #ffecdf;
 }
