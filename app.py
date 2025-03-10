@@ -9,8 +9,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = ('postgresql://postgres:VMwZTYIa67oJ5Cvi
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-from api import api
-app.register_blueprint(api, url_prefix="/api")
+# from api import api
+# app.register_blueprint(api, url_prefix="/api")
 
 @app.route('/')
 def dashboard():
