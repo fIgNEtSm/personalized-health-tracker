@@ -1,20 +1,24 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-
+from api import db, api_app
+from visualization import show
 app = Flask(__name__)
 
 # Database configuration (SQLite)
 app.config['SQLALCHEMY_DATABASE_URI'] = ('postgresql://postgres:VMwZTYIa67oJ5Cvi@bashfully-placid-oriole.data-1.use1'
                                          '.tembo.io:5432/postgres')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
-db = SQLAlchemy(app)
+
 # from api import api
-# app.register_blueprint(api, url_prefix="/api")
+app.register_blueprint(api_app, url_prefix="/api")
 
 @app.route('/')
 def dashboard():
-    return render_template("index.html", active_page="dashboard")
+    fig = show()
+    line_graph_html = fig.to_html(full_html=False)
+    return render_template("index.html", active_page="dashboard", line_graph=line_graph_html)
 
 
 @app.route("/login/")
