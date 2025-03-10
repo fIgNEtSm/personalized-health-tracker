@@ -1235,3 +1235,7 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+.selected {
+  border: 3px solid #6b9fcf !important; /* New Selection Color */
+}
